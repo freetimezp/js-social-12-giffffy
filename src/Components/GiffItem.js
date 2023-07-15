@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { useTheme } from '../context/themeContext';
+import Modal from './Modal';
 
 const GiffItem = ({ id, title, embed_url, url: link, images: { original: { url } } }) => {
     const theme = useTheme();
 
+    const [modal, setModal] = useState(false);
+
     return (
         <GiffsStyled theme={theme}>
-            <div className='gif'>
+            {modal && (
+                <Modal
+                    title={title}
+                    giff={url}
+                    link={link}
+                    embed_url={embed_url}
+                    setModal={setModal}
+                />
+            )}
+            <div className='gif' onDoubleClick={() => setModal(true)}>
                 <img src={url} alt={title} />
                 <div className='love'>
                     <i className='fa-solid fa-heart'></i>
