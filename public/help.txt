@@ -4,3 +4,4 @@ https://developers.giphy.com/
 https://fonts.google.com/
 https://fontawesome.com/
 https://masonry.desandro.com/
+https://loading.io/css/

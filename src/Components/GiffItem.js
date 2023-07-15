@@ -3,11 +3,13 @@ import styled from 'styled-components';
 
 import { useTheme } from '../context/themeContext';
 import Modal from './Modal';
+import { useGlobal } from '../context/global';
+import Loader from './Loader';
 
 const GiffItem = ({ id, title, embed_url, url: link, images: { original: { url } } }) => {
     const theme = useTheme();
-
     const [modal, setModal] = useState(false);
+    const { loading } = useGlobal();
 
     return (
         <GiffsStyled theme={theme}>
@@ -20,12 +22,17 @@ const GiffItem = ({ id, title, embed_url, url: link, images: { original: { url }
                     setModal={setModal}
                 />
             )}
-            <div className='gif' onDoubleClick={() => setModal(true)}>
-                <img src={url} alt={title} />
-                <div className='love'>
-                    <i className='fa-solid fa-heart'></i>
+
+            {loading ? (
+                <Loader />
+            ) : (
+                <div className='gif' onDoubleClick={() => setModal(true)}>
+                    <img src={url} alt={title} />
+                    <div className='love'>
+                        <i className='fa-solid fa-heart'></i>
+                    </div>
                 </div>
-            </div>
+            )}
         </GiffsStyled>
     );
 };

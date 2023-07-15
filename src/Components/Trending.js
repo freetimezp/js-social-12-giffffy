@@ -4,12 +4,13 @@ import Masonry from 'react-masonry-css';
 
 import { useGlobal } from '../context/global';
 import GiffItem from '../Components/GiffItem';
+import Loader from '../Components/Loader';
 import { useTheme } from '../context/themeContext';
 
 const trend = <i className='fa-solid fa-arrow-trend-up'></i>
 
 const Trending = () => {
-    const { trending } = useGlobal();
+    const { trending, loading } = useGlobal();
     //console.log(trending);
 
     const theme = useTheme();
@@ -24,6 +25,9 @@ const Trending = () => {
     return (
         <TrendingStyled theme={theme}>
             <h2>{trend} Trending</h2>
+
+            {loading && <Loader />}
+
             <Masonry
                 breakpointCols={breakpointColumnsObj}
                 className='my-masonry-grid'
