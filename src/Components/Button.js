@@ -7,7 +7,7 @@ const Button = ({ name, icon, onClick }) => {
     const theme = useTheme();
 
     return (
-        <ButtonStyled theme={theme}>
+        <ButtonStyled theme={theme} onClick={onClick}>
             <span>
                 {icon}
                 {name}

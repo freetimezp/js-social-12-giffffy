@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import axios from "axios";
 
 import { globalReducer } from "../reducers/globalReducer";
-import { GET_TRENDING, LOADING } from "../utils/globalActions";
+import { GET_TRENDING, LOADING, GET_RANDOM } from "../utils/globalActions";
 import { useEffect } from "react";
 
 const apiKey = process.env.REACT_APP_GIPHY_API_KEY;
@@ -33,14 +33,23 @@ export const GlobalProvider = ({ children }) => {
         //console.log(res.data.data);
     }
 
+    //get random gifs
+    const randomGiff = async () => {
+        dispatch({ type: LOADING });
+        const res = await axios.get(`${baseUrl}/random?api_key=${apiKey}&limit=30`);
+
+        dispatch({ type: GET_RANDOM, payload: res.data.data });
+    }
+
     //initial renders
     useEffect(() => {
         getTrending();
+        randomGiff();
     }, []);
     //console.log(state);
 
     return (
-        <GlobalContext.Provider value={{ ...state }}>
+        <GlobalContext.Provider value={{ ...state, randomGiff }}>
             {children}
         </GlobalContext.Provider>
     );
