@@ -35,12 +35,12 @@ export const GlobalProvider = ({ children }) => {
 
     //initial renders
     useEffect(() => {
-        getTrending()
+        getTrending();
     }, []);
     //console.log(state);
 
     return (
-        <GlobalContext.Provider value={'hiiii'}>
+        <GlobalContext.Provider value={{ ...state }}>
             {children}
         </GlobalContext.Provider>
     );
