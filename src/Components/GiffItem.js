@@ -6,10 +6,19 @@ import Modal from './Modal';
 import { useGlobal } from '../context/global';
 import Loader from './Loader';
 
-const GiffItem = ({ id, title, embed_url, url: link, images: { original: { url } } }) => {
+const GiffItem = ({
+    id,
+    title,
+    embed_url,
+    url: link,
+    images: {
+        original: { url }
+    },
+    rendered
+}) => {
     const theme = useTheme();
     const [modal, setModal] = useState(false);
-    const { loading } = useGlobal();
+    const { loading, saveToFavourites, removeFromLocalStorage } = useGlobal();
 
     return (
         <GiffsStyled theme={theme}>
@@ -28,8 +37,24 @@ const GiffItem = ({ id, title, embed_url, url: link, images: { original: { url }
             ) : (
                 <div className='gif' onDoubleClick={() => setModal(true)}>
                     <img src={url} alt={title} />
-                    <div className='love'>
-                        <i className='fa-solid fa-heart'></i>
+                    <div
+                        className='love'
+                        onClick={() => {
+                            if (rendered === 'liked') {
+                                removeFromLocalStorage();
+                            } else {
+                                saveToFavourites({
+                                    id,
+                                    title,
+                                    url: link,
+                                    images: {
+                                        original: { url }
+                                    }
+                                });
+                            }
+                        }}
+                    >
+                        <i className={rendered === 'liked' ? 'fa-solid fa-x' : 'fa-solid fa-heart'}></i>
                     </div>
                 </div>
             )}

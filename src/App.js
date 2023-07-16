@@ -9,6 +9,7 @@ import Trending from "./Components/Trending";
 import Random from "./Components/Random";
 import { useGlobal } from "./context/global";
 import Search from "./Components/Search";
+import Favourites from "./Components/Favourites";
 
 function App() {
   const theme = useTheme();
@@ -24,7 +25,7 @@ function App() {
       case 'trending':
         return <Trending />;
       case 'liked':
-        return <Trending />;
+        return <Favourites rendered={rendered} />;
       case 'random':
         return <Random />;
       case 'search':

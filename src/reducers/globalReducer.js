@@ -1,4 +1,11 @@
-import { GET_TRENDING, LOADING, GET_RANDOM, GET_SEARCH } from "../utils/globalActions";
+import {
+    GET_TRENDING,
+    LOADING,
+    GET_RANDOM,
+    GET_SEARCH,
+    ADD_TO_FAVOURITES,
+    GET_FAVOURITES
+} from "../utils/globalActions";
 
 export const globalReducer = (state, action) => {
     switch (action.type) {
@@ -10,6 +17,10 @@ export const globalReducer = (state, action) => {
             return { ...state, loading: false, random: action.payload };
         case GET_SEARCH:
             return { ...state, loading: false, searchResults: action.payload };
+        case ADD_TO_FAVOURITES:
+            return { ...state, loading: false, favourites: [...state.favourites, action.payload] };
+        case GET_FAVOURITES:
+            return { ...state, loading: false, favourites: action.payload };
         default:
             break;
     }

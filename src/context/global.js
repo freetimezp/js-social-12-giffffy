@@ -2,7 +2,14 @@ import React, { createContext, useContext, useReducer } from "react";
 import axios from "axios";
 
 import { globalReducer } from "../reducers/globalReducer";
-import { GET_TRENDING, LOADING, GET_RANDOM, GET_SEARCH } from "../utils/globalActions";
+import {
+    GET_TRENDING,
+    LOADING,
+    GET_RANDOM,
+    GET_SEARCH,
+    ADD_TO_FAVOURITES,
+    GET_FAVOURITES
+} from "../utils/globalActions";
 import { useEffect } from "react";
 
 const apiKey = process.env.REACT_APP_GIPHY_API_KEY;
@@ -49,15 +56,53 @@ export const GlobalProvider = ({ children }) => {
         dispatch({ type: GET_SEARCH, payload: res.data.data });
     }
 
+    //save to favourites
+    const saveToFavourites = (gif) => {
+        const storedItems = JSON.parse(window.localStorage.getItem('favourites')) || [];
+
+        if (!storedItems.some((item) => item.id === gif.id)) {
+            const items = [...storedItems, gif];
+            window.localStorage.setItem("favourites", JSON.stringify(items));
+
+            dispatch({ type: ADD_TO_FAVOURITES, payload: gif });
+            alert("Add to favourites. Success!")
+        } else {
+            alert("Gif alrady saved.");
+        }
+    }
+
+    const removeFromLocalStorage = (gif) => {
+        const storedItems = JSON.parse(window.localStorage.getItem('favourites')) || [];
+        const items = storedItems.filter((item) => item.id !== gif.id);
+        window.localStorage.setItem("favourites", JSON.stringify(items));
+        alert("Remove from favourites!");
+
+        getFromLocalStorage();
+    }
+
+    const getFromLocalStorage = () => {
+        const storedItems = JSON.parse(window.localStorage.getItem('favourites')) || [];
+        dispatch({ type: GET_FAVOURITES, payload: storedItems });
+    }
+
     //initial renders
     useEffect(() => {
         getTrending();
         randomGiff();
+        getFromLocalStorage();
     }, []);
     //console.log(state);
 
     return (
-        <GlobalContext.Provider value={{ ...state, randomGiff, searchGiff }}>
+        <GlobalContext.Provider
+            value={{
+                ...state,
+                randomGiff,
+                searchGiff,
+                saveToFavourites,
+                removeFromLocalStorage
+            }}
+        >
             {children}
         </GlobalContext.Provider>
     );

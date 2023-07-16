@@ -16,6 +16,10 @@ function Header({ setRendered }) {
         searchGiff(query);
         setRendered('search');
         setQuery('');
+
+        if (query === '') {
+            setRendered('trending');
+        }
     }
 
     const handleChange = (e) => {
