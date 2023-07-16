@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import axios from "axios";
 
 import { globalReducer } from "../reducers/globalReducer";
-import { GET_TRENDING, LOADING, GET_RANDOM } from "../utils/globalActions";
+import { GET_TRENDING, LOADING, GET_RANDOM, GET_SEARCH } from "../utils/globalActions";
 import { useEffect } from "react";
 
 const apiKey = process.env.REACT_APP_GIPHY_API_KEY;
@@ -41,6 +41,14 @@ export const GlobalProvider = ({ children }) => {
         dispatch({ type: GET_RANDOM, payload: res.data.data });
     }
 
+    //get search gifs
+    const searchGiff = async (query) => {
+        dispatch({ type: LOADING });
+        const res = await axios.get(`${baseUrl}/search?api_key=${apiKey}&q=${query}&limit=30`);
+
+        dispatch({ type: GET_SEARCH, payload: res.data.data });
+    }
+
     //initial renders
     useEffect(() => {
         getTrending();
@@ -49,7 +57,7 @@ export const GlobalProvider = ({ children }) => {
     //console.log(state);
 
     return (
-        <GlobalContext.Provider value={{ ...state, randomGiff }}>
+        <GlobalContext.Provider value={{ ...state, randomGiff, searchGiff }}>
             {children}
         </GlobalContext.Provider>
     );

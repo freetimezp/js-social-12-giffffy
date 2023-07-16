@@ -8,6 +8,7 @@ import Button from "./Components/Button";
 import Trending from "./Components/Trending";
 import Random from "./Components/Random";
 import { useGlobal } from "./context/global";
+import Search from "./Components/Search";
 
 function App() {
   const theme = useTheme();
@@ -27,7 +28,7 @@ function App() {
       case 'random':
         return <Random />;
       case 'search':
-        return <Trending />;
+        return <Search />;
       default:
         return <Trending />
     }
@@ -35,7 +36,7 @@ function App() {
 
   return (
     <AppStyled theme={theme}>
-      <Header />
+      <Header setRendered={setRendered} />
 
       <div className="fetch-btns">
         <Button
